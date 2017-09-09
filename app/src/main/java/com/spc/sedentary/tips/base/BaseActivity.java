@@ -1,0 +1,21 @@
+package com.spc.sedentary.tips.base;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import butterknife.ButterKnife;
+
+/**
+ * Created by spc on 2017/9/9.
+ */
+
+public abstract class BaseActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutId());
+        ButterKnife.bind(this);
+    }
+
+    protected abstract int getLayoutId();
+}
