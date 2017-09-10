@@ -21,6 +21,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        TLog.e("onCreateonCreate");
     }
 
     @Override
@@ -87,15 +89,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

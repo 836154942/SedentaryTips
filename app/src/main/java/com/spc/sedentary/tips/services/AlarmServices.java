@@ -1,6 +1,7 @@
 package com.spc.sedentary.tips.services;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
+import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.utils.AlarmUtil;
 import com.spc.sedentary.tips.utils.Constant;
 import com.spc.sedentary.tips.utils.LogFileUtil;
@@ -25,6 +27,17 @@ public class AlarmServices extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        TLog.e("onCreate[[[[?.");
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setTicker("正在运行")
+                .setContentText("好好学习")
+                .setSmallIcon(R.mipmap.ic_launcher);
+        startForeground(111, builder.build());
     }
 
     @Override

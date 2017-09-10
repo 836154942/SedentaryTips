@@ -4,8 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.spc.sedentary.tips.activity.MainActivity;
 import com.spc.sedentary.tips.base.TipsApplication;
