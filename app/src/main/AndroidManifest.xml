@@ -26,12 +26,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".services.TimeJobServices"
             android:enabled="true"
             android:exported="true"
-            android:persistent="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:persistent="true" />
+
+        <service
+            android:name=".services.AlarmServices"
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -56,22 +56,6 @@ public class TimeJobServices extends JobService {
     });
 
     private void showRestTips(Message msg) {
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                TLog.e("!1111111111");
-                try {
-                    sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Message m = Message.obtain();
-                m.obj = msg.obj;
-                m.what=WHAT_TIPS;
-                handler.sendMessage(m);
-            }
-        }.start();
     }
 
 
