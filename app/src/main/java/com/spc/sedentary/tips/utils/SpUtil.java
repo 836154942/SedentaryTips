@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.spc.sedentary.tips.base.TipsApplication;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,17 +62,17 @@ public class SpUtil {
     }
 
 
-    public static void setSettingLong(Context context, final String key,
+    public static void setSettingLong(final String key,
                                       final long value) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         settings.edit().putLong(key, value).commit();
     }
 
-    public static long getPrefLong(Context context, final String key,
+    public static long getPrefLong(final String key,
                                    final long defaultValue) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         return settings.getLong(key, defaultValue);
     }
 

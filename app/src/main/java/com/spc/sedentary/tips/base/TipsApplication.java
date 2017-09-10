@@ -15,7 +15,7 @@ public class TipsApplication extends Application {
         mInstance =this;
     }
 
-    public TipsApplication getInst() {
+    public static TipsApplication getInst() {
         return mInstance;
     }
 }
