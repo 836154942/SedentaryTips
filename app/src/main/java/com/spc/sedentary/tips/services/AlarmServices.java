@@ -1,15 +1,14 @@
 package com.spc.sedentary.tips.services;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
 import com.spc.sedentary.tips.R;
+import com.spc.sedentary.tips.activity.MainActivity;
 import com.spc.sedentary.tips.utils.AlarmUtil;
 import com.spc.sedentary.tips.utils.Constant;
 import com.spc.sedentary.tips.utils.LogFileUtil;
@@ -32,11 +31,14 @@ public class AlarmServices extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        TLog.e("onCreate[[[[?.");
+        TLog.e("AlarmServices ------<<<<<onCreate[[[[?.");
         Notification.Builder builder = new Notification.Builder(this);
         builder.setTicker("正在运行")
                 .setContentText("好好学习")
                 .setSmallIcon(R.mipmap.ic_launcher);
+        Intent goIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, goIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
         startForeground(111, builder.build());
     }
 
@@ -52,6 +54,7 @@ public class AlarmServices extends Service {
         } else {
             TLog.e("在记时");
             LogFileUtil.appen(new Date().toLocaleString() + "\r\n");
+//            NetTest.sendMessageToServer(new Date().toLocaleString() +  "       "+android.os.Build.BRAND + "          \r\n");
         }
         return START_STICKY;
     }
@@ -62,3 +65,5 @@ public class AlarmServices extends Service {
         super.onDestroy();
     }
 }
+
+

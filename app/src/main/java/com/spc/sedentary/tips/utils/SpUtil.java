@@ -35,10 +35,10 @@ public class SpUtil {
         settings.edit().putString(key, value).commit();
     }
 
-    public static boolean getPrefBoolean(Context context, final String key,
+    public static boolean getPrefBoolean( final String key,
                                          final boolean defaultValue) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         return settings.getBoolean(key, defaultValue);
     }
 
@@ -47,10 +47,10 @@ public class SpUtil {
                 key);
     }
 
-    public static void setPrefBoolean(Context context, final String key,
+    public static void setPrefBoolean(final String key,
                                       final boolean value) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         settings.edit().putBoolean(key, value).commit();
     }
 

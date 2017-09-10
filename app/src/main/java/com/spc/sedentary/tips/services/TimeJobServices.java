@@ -1,20 +1,13 @@
 package com.spc.sedentary.tips.services;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PowerManager;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.utils.Constant;
@@ -29,9 +22,9 @@ import java.util.Date;
  */
 
 public class TimeJobServices extends JobService {
-    public static final int WHAT_TIME_DOING =0x201;
-    public static final int WHAT_TIME_OVER =0x202;
-    public static final int WHAT_TIPS =0x203;
+    public static final int WHAT_TIME_DOING = 0x201;
+    public static final int WHAT_TIME_OVER = 0x202;
+    public static final int WHAT_TIPS = 0x203;
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -46,7 +39,7 @@ public class TimeJobServices extends JobService {
             } else if (msg.what == WHAT_TIME_DOING) {
                 LogFileUtil.appen(new Date().toLocaleString() + "\r\n");
                 jobFinished((JobParameters) msg.obj, false);
-            }else if (msg.what ==WHAT_TIPS){
+            } else if (msg.what == WHAT_TIPS) {
 //                jobFinished((JobParameters) msg.obj, false);
 //                JobScheduler tm = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
 //                tm.cancel(345);
@@ -123,3 +116,17 @@ public class TimeJobServices extends JobService {
 //        }
 //    }
 }
+
+//        startService(new Intent(this, TimeJobServices.class));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//            JobInfo jobInfo = new JobInfo.Builder(345, new ComponentName(getPackageName(), TimeJobServices.class.getName()))
+//                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE)
+//                    .setPeriodic(2000)
+//                    .build();
+//            int res;
+//            if ((res = jobScheduler.schedule(jobInfo)) <= 0) {
+//            } else {
+//            }
+//
+//        }
