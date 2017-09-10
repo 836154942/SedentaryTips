@@ -1,10 +1,17 @@
 package com.spc.sedentary.tips.activity;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +21,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.base.BaseActivity;
 import com.spc.sedentary.tips.services.TimeJobServices;
+import com.spc.sedentary.tips.utils.Constant;
+import com.spc.sedentary.tips.utils.LogFileUtil;
+import com.spc.sedentary.tips.utils.SpUtil;
+import com.spc.sedentary.tips.utils.TLog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,6 +43,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     NavigationView navigationView;
     @BindView(R.id.mNumberPicker)
     NumberPicker mNumberPicker;
+
+    public static final int REQUEST_IGNORE_BATTERY_CODE = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,20 +112,70 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    public static boolean isIgnoringBatteryOptimizations(Activity activity) {
+        String packageName = activity.getPackageName();
+        PowerManager pm = (PowerManager) activity
+                .getSystemService(Context.POWER_SERVICE);
+        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+            return true;
+        } else {
+            isIgnoreBatteryOption(activity);
+            return false;
+        }
+    }
+
     @OnClick(R.id.mBtnSet)
     public void onViewClicked(View view) {
+        if (!isIgnoringBatteryOptimizations(this)) {
+            return;
+        }
+        startService(new Intent(this, TimeJobServices.class));
+        //当前时间存储sp，在jobservices里面比对时间戳
+        SpUtil.setSettingLong(Constant.SP_KEY_START_TIME, System.currentTimeMillis());
+        SpUtil.setSettingLong(Constant.SP_KEY_TIME_DURING, 20000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
             JobInfo jobInfo = new JobInfo.Builder(345, new ComponentName(getPackageName(), TimeJobServices.class.getName()))
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE)
-                    .setMinimumLatency(1000)
-                    .setOverrideDeadline(2000)
+                    .setPeriodic(2000)
                     .build();
             int res;
             if ((res = jobScheduler.schedule(jobInfo)) <= 0) {
             } else {
             }
 
+        }
+    }
+
+    public static void isIgnoreBatteryOption(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                Intent intent = new Intent();
+                String packageName = activity.getPackageName();
+                PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+//  intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    intent.setData(Uri.parse("package:" + packageName));
+                    activity.startActivityForResult(intent, REQUEST_IGNORE_BATTERY_CODE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_IGNORE_BATTERY_CODE) {
+                //TODO something
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            if (requestCode == REQUEST_IGNORE_BATTERY_CODE) {
+                Toast.makeText(this, "请开启忽略电池优化", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
