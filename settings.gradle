@@ -1,1 +1,3 @@
 include ':app'
+include ':sdk:Module_Ieinject_Annotation'
+include ':sdk:Module_Inject_Comlier'

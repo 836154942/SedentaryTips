@@ -1,4 +1,4 @@
-package com.spc.sedentary.tips.activity;
+package com.spc.sedentary.tips.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,7 +32,6 @@ import com.spc.sedentary.tips.utils.Constant;
 import com.spc.sedentary.tips.utils.SpUtil;
 import com.spc.sedentary.tips.utils.TLog;
 import com.spc.sedentary.tips.utils.ToastUtil;
-import com.spc.sedentary.tips.utils.VibratorUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -68,7 +67,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @OnClick(R.id.fab)
     public void bottomTips(View view) {
         Snackbar.make(view, R.string.main_bottom_tips, Snackbar.LENGTH_LONG)
-                .setAction(R.string.main_bottom_to, v -> Toast.makeText(this, "biu biu~", Toast.LENGTH_SHORT).show()).show();
+                .setAction("TO  " + SpUtil.getPrefString(Constant.SP_KEY_DISPLAY_NAME,
+                        getString(R.string.pref_default_display_name)), v -> Toast.makeText(this, "biu biu~", Toast.LENGTH_SHORT).show()).show();
     }
 
     private void initView() {
@@ -79,7 +79,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        //设置选择器
     }
 
 
@@ -104,7 +103,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_camera:
+            case R.id.start_study:
                 if (!isIgnoringBatteryOptimizations(this)) {
                     isIgnoreBatteryOption(this);
                     break;
@@ -128,7 +127,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     showStartDialog();
                 }
                 break;
-            case R.id.nav_gallery:
+            case R.id.end_study:
                 if (!SpUtil.getPrefBoolean(Constant.SP_KEY_IS_STARTED, false)) {
                     ToastUtil.showToast(R.string.not_start_tips);
                 } else {
@@ -148,18 +147,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_slideshow:
                 ToastUtil.showToast("正在开发，敬请期待");
-                startActivity(ShowTipsActivity.buildIntent(this));
+                break;
+            case R.id.remark_list:
+                //TODO 备忘录列表 （添加备忘录）
+                startActivity(RemarkListActivity.buildIntent(this));
+                break;
+            case R.id.remark_done:
+                //TODO 已完成备忘录
                 break;
             case R.id.nav_manage:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.nav_send:
-                ToastUtil.showToast("这个很麻烦,多给我点时间~");
-                VibratorUtil.vibrate();
+                ToastUtil.showToast("这个超麻烦,多给我点时间~");
+                startActivity(ShowTipsActivity.buildIntent(this));
                 break;
-//            case R.id.nav_share:
-//                break;
-//
+
             default:
                 break;
         }

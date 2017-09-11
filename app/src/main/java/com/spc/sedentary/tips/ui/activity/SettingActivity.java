@@ -1,4 +1,4 @@
-package com.spc.sedentary.tips.activity;
+package com.spc.sedentary.tips.ui.activity;
 
 import com.spc.sedentary.tips.base.BaseActivity;
 

@@ -3,33 +3,44 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/start_study"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/study_start" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/end_study"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/study_end" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="日历记录" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/setting" />
     </group>
 
+
+    <item android:title="备忘录">
+        <menu>
+            <item
+                android:id="@+id/remark_list"
+                android:icon="@drawable/ic_menu_send"
+                android:title="待办事项" />
+
+            <item
+                android:id="@+id/remark_done"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="已完成" />
+        </menu>
+    </item>
     <item android:title="其他">
         <menu>
-            <!--<item-->
-            <!--android:id="@+id/nav_share"-->
-            <!--android:icon="@drawable/ic_menu_share"-->
-            <!--android:title="Share" />-->
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="记账" />
+
+            <item
+                android:id="@+id/nav_manage"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/setting" />
         </menu>
     </item>
 

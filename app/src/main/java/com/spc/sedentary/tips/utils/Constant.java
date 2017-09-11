@@ -10,6 +10,7 @@ public class Constant {
     public static final String SP_KEY_IS_STARTED = "sp_key_is_started";//是否正在统计
     public static final String SP_KEY_IS_TIME_INTERVAL = "sp_key_is_time_interval";// 轮询时间 min
     public static final String SP_KEY_SLEEP_TIME = "sp_key_sleep_time";// 休息时间 min
+    public static final String SP_KEY_DISPLAY_NAME = "sp_key_display_name";// 休息时间 min
 
 
     //轮询时间
