@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 
-import com.spc.sedentary.tips.activity.MainActivity;
 import com.spc.sedentary.tips.base.TipsApplication;
 import com.spc.sedentary.tips.services.AlarmServices;
 
@@ -26,7 +25,7 @@ public class AlarmUtil {
         intent.setClass(TipsApplication.getInst(), AlarmServices.class);
         PendingIntent pendingIntent = PendingIntent.
                 getService(TipsApplication.getInst(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), MainActivity.TIME_ALARM_POLL, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), Constant.get_time_interval(), pendingIntent);
         SpUtil.setPrefBoolean(Constant.SP_KEY_IS_STARTED,true);
     }
 

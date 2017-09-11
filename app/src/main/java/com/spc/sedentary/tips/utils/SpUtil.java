@@ -21,21 +21,21 @@ import java.io.StreamCorruptedException;
 
 public class SpUtil {
 
-    public static String getPrefString(Context context, String key,
+    public static String getPrefString(String key,
                                        final String defaultValue) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         return settings.getString(key, defaultValue);
     }
 
-    public static void setPrefString(Context context, final String key,
+    public static void setPrefString(final String key,
                                      final String value) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         settings.edit().putString(key, value).commit();
     }
 
-    public static boolean getPrefBoolean( final String key,
+    public static boolean getPrefBoolean(final String key,
                                          final boolean defaultValue) {
         final SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(TipsApplication.getInst());
@@ -54,10 +54,10 @@ public class SpUtil {
         settings.edit().putBoolean(key, value).commit();
     }
 
-    public static void setPrefInt(Context context, final String key,
+    public static void setPrefInt(final String key,
                                   final int value) {
         final SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(context);
+                .getDefaultSharedPreferences(TipsApplication.getInst());
         settings.edit().putInt(key, value).commit();
     }
 

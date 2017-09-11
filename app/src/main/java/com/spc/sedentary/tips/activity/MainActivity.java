@@ -32,16 +32,17 @@ import com.spc.sedentary.tips.utils.Constant;
 import com.spc.sedentary.tips.utils.SpUtil;
 import com.spc.sedentary.tips.utils.TLog;
 import com.spc.sedentary.tips.utils.ToastUtil;
+import com.spc.sedentary.tips.utils.VibratorUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    public static final int TIME_ALARM_POLL = 1 * 60 * 1000; //alarmservice1分钟轮询一次
-    public static final int TIME_SELECT_MIN = 2;
-    public static final int TIME_SELECT_DEFAULT = 5;
-    public static final int TIME_SELECT_MAX = 100;
-    public static final int REQUEST_IGNORE_BATTERY_CODE = 99;
+
+    public static int TIME_SELECT_MIN = 1;//时间选择器最小值
+    public static int TIME_SELECT_DEFAULT = 1;//时间选择器默认
+    public static int TIME_SELECT_MAX = 100;//时间选择器最大值
+    public static int REQUEST_IGNORE_BATTERY_CODE = 0x999;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -146,11 +147,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
                 break;
             case R.id.nav_slideshow:
-            case R.id.nav_manage:
                 ToastUtil.showToast("正在开发，敬请期待");
+                startActivity(ShowTipsActivity.buildIntent(this));
+                break;
+            case R.id.nav_manage:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.nav_send:
                 ToastUtil.showToast("这个很麻烦,多给我点时间~");
+                VibratorUtil.vibrate();
                 break;
 //            case R.id.nav_share:
 //                break;

@@ -9,9 +9,10 @@ import android.support.annotation.Nullable;
 
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.activity.MainActivity;
-import com.spc.sedentary.tips.utils.AlarmUtil;
+import com.spc.sedentary.tips.activity.ShowTipsActivity;
 import com.spc.sedentary.tips.utils.Constant;
 import com.spc.sedentary.tips.utils.LogFileUtil;
+import com.spc.sedentary.tips.utils.NetTest;
 import com.spc.sedentary.tips.utils.SpUtil;
 import com.spc.sedentary.tips.utils.TLog;
 
@@ -49,12 +50,16 @@ public class AlarmServices extends Service {
         long during = SpUtil.getPrefLong(Constant.SP_KEY_TIME_DURING, 0);
         long des = start + during;
         if (des < System.currentTimeMillis()) {
-            TLog.e("时间到了  结束闹钟 ~！！！！！！！！！！！");
-            AlarmUtil.stopAlarmSericecs();
+            TLog.e("时间到了   提醒!");
+          startActivity(ShowTipsActivity.buildIntent(this));//到时间提醒
+            LogFileUtil.appen(new Date().toLocaleString() + "       " + "假装进行了一次提醒!!!!! \r\n");
+            //重新设置开始时间
+            SpUtil.setSettingLong(Constant.SP_KEY_START_TIME, System.currentTimeMillis() + Constant.getSleep_milli_time());
+
         } else {
-            TLog.e("在记时");
+            TLog.e("在记录时间");
             LogFileUtil.appen(new Date().toLocaleString() + "\r\n");
-//            NetTest.sendMessageToServer(new Date().toLocaleString() +  "       "+android.os.Build.BRAND + "          \r\n");
+            NetTest.sendMessageToServer(new Date().toLocaleString() +  "       "+android.os.Build.BRAND + "          \r\n");
         }
         return START_STICKY;
     }
