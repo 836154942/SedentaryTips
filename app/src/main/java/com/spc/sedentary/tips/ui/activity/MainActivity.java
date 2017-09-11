@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spc.sedentary.tips.R;
@@ -31,10 +32,15 @@ import com.spc.sedentary.tips.utils.AlarmUtil;
 import com.spc.sedentary.tips.utils.Constant;
 import com.spc.sedentary.tips.utils.SpUtil;
 import com.spc.sedentary.tips.utils.TLog;
+import com.spc.sedentary.tips.utils.TimeUtils;
 import com.spc.sedentary.tips.utils.ToastUtil;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,6 +55,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Toolbar toolbar;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.mTvStatus)
+    TextView mTvStatus;
+    @BindView(R.id.mTvStudiedTime)
+    TextView mTvStudiedTime;
+    @BindView(R.id.mTvNextSleepTime)
+    TextView mTvNextSleepTime;
 
 
     @Override
@@ -56,6 +68,32 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         initView();
         TLog.e("MainActivityMainActivityMainActivity    onCreate");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        upDateView();
+        mCompositeSubscription.add(Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l -> upDateView()));
+    }
+
+    private void upDateView() {
+        if (AlarmUtil.isServiceRunning(this, AlarmServices.class.getName())) {
+            mTvStatus.setText("正在倒计时");
+            long startTime = SpUtil.getPrefLong(Constant.SP_KEY_START_TIME, 0);
+            long duringTime = SpUtil.getPrefLong(Constant.SP_KEY_TIME_DURING, 0);
+            long endTime = startTime + duringTime;
+
+            mTvStudiedTime.setText(TimeUtils.countdownTime(System.currentTimeMillis(), startTime));
+            if (endTime - System.currentTimeMillis() < 0) {
+                mTvNextSleepTime.setText("稍等噢，马上就能休息~ （超时" + TimeUtils.countdownTime(System.currentTimeMillis(), endTime) + "s）");
+            } else
+                mTvNextSleepTime.setText(TimeUtils.countdownTime(endTime, System.currentTimeMillis()));
+        } else {
+            mTvStatus.setText("还没有运行");
+        }
     }
 
     @Override
@@ -149,7 +187,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 ToastUtil.showToast("正在开发，敬请期待");
                 break;
             case R.id.remark_list:
-                //TODO 备忘录列表 （添加备忘录）
                 startActivity(RemarkListActivity.buildIntent(this));
                 break;
             case R.id.remark_done:
@@ -172,7 +209,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void showStartDialog() {
-        ViewGroup dialogView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.content_main, null);
+        ViewGroup dialogView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.dialog_start, null);
         NumberPicker mNumberPicker = (NumberPicker) dialogView.findViewById(R.id.mNumberPicker);
         mNumberPicker.setMinValue(TIME_SELECT_MIN);
         mNumberPicker.setMaxValue(TIME_SELECT_MAX);
@@ -213,6 +250,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         SpUtil.setSettingLong(Constant.SP_KEY_TIME_DURING, intervalMilli);
         AlarmUtil.startAlarmServices();
         ToastUtil.showToast(R.string.start_tips);
+        upDateView();
     }
 
 

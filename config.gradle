@@ -18,12 +18,12 @@ ext {
             "recyclerview"               : "com.android.support:recyclerview-v7:${appcompat_v7_design}",
             "rxjava"                     : 'io.reactivex:rxjava:1.1.6',
             "rxandroid"                  : 'io.reactivex:rxandroid:1.2.1',
-            "retrofit2"                  : "com.squareup.retrofit2:retrofit:2.2.0",
-            "okhttp3"                    : "com.squareup.okhttp3:okhttp:3.8.0",
-            "okhttp3-logging-interceptor": "com.squareup.okhttp3:logging-interceptor:3.6.0",
-            "gson"                       : "com.google.code.gson:gson:2.8.0",
-            "converter-gson"             : 'com.squareup.retrofit2:converter-gson:2.3.0',
-            "adapter-rxjava"             : 'com.squareup.retrofit2:adapter-rxjava:2+',
-            "converter-scalars"          : 'com.squareup.retrofit2:converter-scalars:2.3.0'
+//            "retrofit2"                  : "com.squareup.retrofit2:retrofit:2.2.0",
+//            "okhttp3"                    : "com.squareup.okhttp3:okhttp:3.8.0",
+//            "okhttp3-logging-interceptor": "com.squareup.okhttp3:logging-interceptor:3.6.0",
+//            "gson"                       : "com.google.code.gson:gson:2.8.0",
+//            "converter-gson"             : 'com.squareup.retrofit2:converter-gson:2.3.0',
+//            "adapter-rxjava"             : 'com.squareup.retrofit2:adapter-rxjava:2+',
+//            "converter-scalars"          : 'com.squareup.retrofit2:converter-scalars:2.3.0'
     ]
 }
