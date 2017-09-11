@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             } else
                 mTvNextSleepTime.setText(TimeUtils.countdownTime(endTime, System.currentTimeMillis()));
         } else {
-            mTvStatus.setText("还没有运行");
+            mTvStatus.setText("还没有开始学习");
         }
     }
 
@@ -191,6 +191,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.remark_done:
                 //TODO 已完成备忘录
+                startActivity(ShowTipsActivity.buildIntent(this));
                 break;
             case R.id.nav_manage:
                 startActivity(new Intent(this, SettingsActivity.class));

@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.base.BaseActivity;
 import com.spc.sedentary.tips.utils.VibratorUtil;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -18,8 +16,6 @@ import butterknife.OnClick;
  */
 
 public class ShowTipsActivity extends BaseActivity {
-    @BindView(R.id.mButtonOK)
-    Button mButtonOK;
 
     @Override
     protected int getLayoutId() {

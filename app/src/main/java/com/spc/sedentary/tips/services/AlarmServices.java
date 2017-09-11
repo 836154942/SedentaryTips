@@ -48,7 +48,7 @@ public class AlarmServices extends Service {
         long start = SpUtil.getPrefLong(Constant.SP_KEY_START_TIME, 0);
         long during = SpUtil.getPrefLong(Constant.SP_KEY_TIME_DURING, 0);
         long des = start + during;
-        TLog.e((des - (System.currentTimeMillis() + Constant.TIME_THRESHOLD)) / 1000 + "差这些 ");
+        TLog.e((des - System.currentTimeMillis()) + "差这些时间休息 ");
         if (des < System.currentTimeMillis() + Constant.TIME_THRESHOLD) {
             TLog.e("时间到了   提醒!");
             startActivity(ShowTipsActivity.buildIntent(this));//到时间提醒
@@ -67,6 +67,7 @@ public class AlarmServices extends Service {
     @Override
     public void onDestroy() {
         TLog.e("onDestroyonDestroyonDestroy");
+        stopForeground(true);
         super.onDestroy();
     }
 }

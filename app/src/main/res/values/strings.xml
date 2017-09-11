@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">SedentaryTips</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="main_bottom_tips">久坐记得起来活动下噢~</string>
+    <string name="app_name">学习助手</string>
+    <string name="action_settings">设置</string>
     <string name="main_bottom_to">TO xx</string>
+    <string name="nav_tips2">design by spc</string>
+    <string name="nav_tips">学习小助手,需要做什么?</string>
+    <string name="enter_tips">To lx</string>
+
+    <string name="main_bottom_tips">久坐记得起来活动下噢~</string>
     <string name="study_start">开始提醒</string>
     <string name="study_end">结束提醒</string>
     <string name="setting">设置</string>
@@ -123,4 +123,8 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="loading">请稍等……</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="tips_activity_label">喝杯水休息下</string>
 </resources>
