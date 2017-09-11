@@ -7,15 +7,20 @@ import android.view.WindowManager;
 
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.base.BaseActivity;
+import com.spc.sedentary.tips.utils.TLog;
 import com.spc.sedentary.tips.utils.VibratorUtil;
+import com.spc.sedentary.tips.view.PagerLayout;
 
-import butterknife.OnClick;
+import butterknife.BindView;
 
 /**
  * Created by spc on 2017/9/10.
  */
 
 public class ShowTipsActivity extends BaseActivity {
+
+    @BindView(R.id.lock_view)
+    PagerLayout myLinearLayout;
 
     @Override
     protected int getLayoutId() {
@@ -31,11 +36,17 @@ public class ShowTipsActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
         super.onCreate(savedInstanceState);
         VibratorUtil.vibrate();
+        initView();
     }
 
-    @OnClick(R.id.mButtonOK)
-    public void onViewClicked() {
-        VibratorUtil.stopVibrate();
+    private void initView() {
+        myLinearLayout.setLayout(this, R.layout.slide_layout);
+        myLinearLayout.setmListener(new PagerLayout.HiddenListener() {
+            @Override
+            public void hidden() {
+                finish();
+            }
+        });
     }
 
     public static Intent buildIntent(Context context) {
@@ -49,4 +60,5 @@ public class ShowTipsActivity extends BaseActivity {
         VibratorUtil.stopVibrate();
         super.onDestroy();
     }
+
 }
