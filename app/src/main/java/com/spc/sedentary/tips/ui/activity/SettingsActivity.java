@@ -53,6 +53,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             } else if (preference instanceof RingtonePreference) {
                 // For ringtone preferences, look up the correct display value
                 // using RingtoneManager.
+                TLog.e("铃声设置  " + preference.getKey() + "-----> " + value);
                 if (TextUtils.isEmpty(stringValue)) {
                     // Empty values correspond to 'silent' (no ringtone).
                     preference.setSummary(R.string.pref_ringtone_silent);
@@ -60,7 +61,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 } else {
                     Ringtone ringtone = RingtoneManager.getRingtone(
                             preference.getContext(), Uri.parse(stringValue));
-
                     if (ringtone == null) {
                         // Clear the summary if there was a lookup error.
                         preference.setSummary(null);
@@ -76,6 +76,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
+                TLog.e("设置  " + preference.getKey() + "-----> " + value);
             }
             return true;
         }
@@ -199,7 +200,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+            bindPreferenceSummaryToValue(findPreference("sp_key_tips_voice"));
         }
 
         @Override

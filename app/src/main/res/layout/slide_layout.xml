@@ -6,12 +6,13 @@
 
 
     <LinearLayout
-        android:background="@drawable/bottom_tips"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_alignParentBottom="true"></LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_tips"></LinearLayout>
 
     <TextView
+        android:id="@+id/mTvBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -22,9 +23,10 @@
         android:textSize="16sp" />
 
     <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/mTvBottom"
         android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
         android:src="@drawable/ic_slide" />
 </RelativeLayout>
