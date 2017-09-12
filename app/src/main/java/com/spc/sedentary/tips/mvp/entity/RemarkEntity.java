@@ -21,7 +21,7 @@ public class RemarkEntity implements Serializable {
     private int color;
     @DatabaseField(width = 15)
     private String date;
-    @DatabaseField(width = 1)
+    @DatabaseField(width = 1, defaultValue = "1")
     private String status;
     @DatabaseField(width = 5)
     private String position;

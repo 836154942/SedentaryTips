@@ -17,6 +17,8 @@ public class Constant {
     public static final String SP_KEY_TIPS_VOICE = "sp_key_tips_voice";// 休息时间 min
     public static final String SP_KEY_IS_TIPS_SLEEP = "sp_key_is_tips_sleep";// 休息时间 min
 
+    public static final String REMARK_STATUS_NORMAL ="1";
+    public static final String REMARK_STATUS_COMPLETE ="2";
 
     //轮询时间
     public static int get_time_interval() {

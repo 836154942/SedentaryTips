@@ -25,4 +25,14 @@ public class RemarkService {
     public List<RemarkEntity> queryForAll() {
         return mDao.queryForAll();
     }
+
+    public List<RemarkEntity> queryNormalAll() {
+        return mDao.queryNormalAll();
+    }
+
+    public List<RemarkEntity> queryCompleteAll() {
+        return mDao.queryCompletelAll();
+    }
+
+
 }

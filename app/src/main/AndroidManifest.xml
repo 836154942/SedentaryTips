@@ -41,6 +41,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activity.RemarkShowActivity"
+            android:label="查看备忘录"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.activity.RemarkAddActivity"

@@ -2,9 +2,14 @@ package com.spc.sedentary.tips.ui.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -17,6 +22,8 @@ import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.base.BaseActivity;
 import com.spc.sedentary.tips.database.service.RemarkService;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
+import com.spc.sedentary.tips.utils.Constant;
+import com.spc.sedentary.tips.utils.TLog;
 import com.spc.sedentary.tips.utils.TextCheckUtil;
 import com.spc.sedentary.tips.utils.ToastUtil;
 
@@ -93,10 +100,27 @@ public class RemarkAddActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            finish();
+            if (TextCheckUtil.isUseable(mEdText.getText().toString())) {
+                showSaveDialog();
+            } else {
+                finish();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("温习提示")
+                .setMessage("备忘录尚未保存，是否真的退出？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }).create().show();
     }
 
     public static Intent buildIntent(Context context) {
@@ -125,6 +149,7 @@ public class RemarkAddActivity extends BaseActivity {
                 }
                 mRemark.setContent(mEdText.getText().toString().trim());
                 mRemark.setDate(mTvDate.getText().toString());
+                mRemark.setStatus(Constant.REMARK_STATUS_NORMAL);
                 RemarkService remarkService = new RemarkService(this);
                 remarkService.insert(mRemark);
                 finish();
@@ -162,6 +187,16 @@ public class RemarkAddActivity extends BaseActivity {
                 mRemark.setColor(getResources().getColor(R.color.remark_color_5));
                 break;
         }
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (TextCheckUtil.isUseable(mEdText.getText().toString())) {
+                showSaveDialog();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -23,7 +23,7 @@ public class RemarkListPresenter extends BasePresenter<RemarkListView> {
     }
 
     public void getData() {
-        List<RemarkEntity> list = mService.queryForAll();
+        List<RemarkEntity> list = mService.queryNormalAll();
         mvpView.getDataSuccess(list);
     }
 }

@@ -2,10 +2,12 @@ package com.spc.sedentary.tips.database.dao;
 
 import android.content.Context;
 
+import com.google.googlejavaformat.Indent;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.spc.sedentary.tips.database.helper.DBHelper;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
+import com.spc.sedentary.tips.utils.Constant;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -80,4 +82,25 @@ public class RemarkDao {
         }
         return list;
     }
+
+    public List<RemarkEntity> queryNormalAll() {
+        List<RemarkEntity> list = new ArrayList<>();
+        try {
+             list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_NORMAL).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<RemarkEntity> queryCompletelAll() {
+        List<RemarkEntity> list = new ArrayList<>();
+        try {
+              list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_COMPLETE).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }
