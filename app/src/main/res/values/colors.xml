@@ -13,4 +13,14 @@
 
     <color name="app_text_black">#363636</color>
     <color name="app_text_orange">#ffb400</color>
+    <color name="app_default_back_ground">#eeeeee</color>
+    <color name="white">#ffffff</color>
+
+
+    <color name="remark_color_1">#32b5e3</color>
+    <color name="remark_color_2">#a967cb</color>
+    <color name="remark_color_3">#98cc00</color>
+    <color name="remark_color_4">#ffbb32</color>
+    <color name="remark_color_5">#fe4543</color>
+
 </resources>

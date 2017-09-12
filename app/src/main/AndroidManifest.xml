@@ -36,10 +36,17 @@
 
         </activity>
         <activity
-            android:label="@string/tips_activity_label"
             android:name=".ui.activity.ShowTipsActivity"
+            android:label="@string/tips_activity_label"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".ui.activity.RemarkAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
 
         <service
             android:name=".services.TimeJobServices"

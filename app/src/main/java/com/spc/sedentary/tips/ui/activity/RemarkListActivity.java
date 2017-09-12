@@ -3,15 +3,22 @@ package com.spc.sedentary.tips.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.anno.spc.ActivityInject;
 import com.spc.sedentary.tips.R;
+import com.spc.sedentary.tips.adapter.RemarkAdapter;
 import com.spc.sedentary.tips.base.BaseMVPActivity;
+import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 import com.spc.sedentary.tips.mvp.iview.RemarkListView;
 import com.spc.sedentary.tips.mvp.presenter.RemarkListPresenter;
-import com.spc.sedentary.tips.utils.ToastUtil;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 
 /**
@@ -20,15 +27,32 @@ import java.util.List;
 
 @ActivityInject
 public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> implements RemarkListView {
+
+    @BindView(R.id.mRecycleView)
+    RecyclerView mRecycleView;
+
+    private RemarkAdapter mAdapter;
+    private List<RemarkEntity> mList;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_remarklist;
     }
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showLoading();
+    }
+
+    private void initData() {
         mvpPresenter.getData();
+    }
+
+    private void initView() {
+        mAdapter = new RemarkAdapter(this, mList);
+        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        mRecycleView.setAdapter(mAdapter);
+        mRecycleView.setItemAnimator(new DefaultItemAnimator());
     }
 
     public static Intent buildIntent(Context context) {
@@ -36,9 +60,22 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
     }
 
     @Override
-    public void getDataSuccess(List<String> list) {
+    public void getDataSuccess(List<RemarkEntity> list) {
         dismissProgressDialog();
-        ToastUtil.showToast("mvp 模板");
-
+        mList = list;
+        initView();
     }
+
+    @OnClick(R.id.mIvAdd)
+    public void addRemark() {
+        startActivity(RemarkAddActivity.buildIntent(this));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mvpPresenter.getData();
+    }
+
+
 }

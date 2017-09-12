@@ -94,3 +94,14 @@ rx.internal.util.atomic.LinkedQueueNode consumerNode;
 -keep class **.R
 -keep  class com.spc.sedentary.tips.ui.activity.** {*;}
 -keep class com.spc.sedentary.tips.fragment.** {*;}
+
+
+-keepattributes *DatabaseField*
+-keepattributes *DatabaseTable*
+-keepattributes *SerializedName*
+-keep class com.j256.**
+-keepclassmembers class com.j256.** { *; }
+-keep enum com.j256.**
+-keepclassmembers enum com.j256.** { *; }
+-keep interface com.j256.**
+-keepclassmembers interface com.j256.** { *; }

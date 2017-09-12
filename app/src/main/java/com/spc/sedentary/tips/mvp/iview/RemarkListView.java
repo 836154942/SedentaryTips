@@ -1,6 +1,7 @@
 package com.spc.sedentary.tips.mvp.iview;
 
 import com.spc.sedentary.tips.base.BaseMvpViewInterface;
+import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 
 public interface RemarkListView extends BaseMvpViewInterface {
-    void getDataSuccess(List<String> list);
+    void getDataSuccess(List<RemarkEntity> list);
 }

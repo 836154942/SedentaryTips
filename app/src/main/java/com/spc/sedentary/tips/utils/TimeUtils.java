@@ -22,10 +22,10 @@ public class TimeUtils {
     }
 
 
-    public static String getYYMMDD(long timeMilli) {//可根据需要自行截取数据显示
-        Date date = new Date(timeMilli);
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH时mm分ss");
-        SimpleDateFormat format = new SimpleDateFormat("HH时mm分ss");
+
+    public static String getYYMMDD(String timeMilli) {//可根据需要自行截取数据显示
+        Date date = new Date(Long.parseLong(timeMilli));
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
 }

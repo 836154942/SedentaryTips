@@ -50,23 +50,23 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
     compile project(':sdk:Module_Ieinject_Annotation')
     apt project(':sdk:Module_Inject_Comlier')
     compile 'com.google.dagger:dagger:2.7'
     provided 'com.google.dagger:dagger-compiler:2.6.1'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.jakewharton:butterknife:8.5.1'
-
     compile rootProject.ext.dependencies["rxjava"]
     compile rootProject.ext.dependencies["rxandroid"]
     compile rootProject.ext.dependencies["appcompat-v7"]
     compile rootProject.ext.dependencies["support-v4"]
     compile rootProject.ext.dependencies["design"]
     testCompile 'junit:junit:4.12'
+    compile files('libs/ormlite-android-5.0.jar')
+    compile files('libs/ormlite-core-5.0.jar')
 }

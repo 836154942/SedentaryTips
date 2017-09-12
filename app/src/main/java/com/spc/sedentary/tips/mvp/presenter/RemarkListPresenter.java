@@ -1,27 +1,29 @@
 package com.spc.sedentary.tips.mvp.presenter;
 
 import com.spc.sedentary.tips.base.BasePresenter;
+import com.spc.sedentary.tips.base.TipsApplication;
+import com.spc.sedentary.tips.database.service.RemarkService;
+import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 import com.spc.sedentary.tips.mvp.iview.RemarkListView;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import javax.inject.Inject;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by spc on 2017/9/11.
  */
 
 public class RemarkListPresenter extends BasePresenter<RemarkListView> {
+    RemarkService mService;
+
     @Inject
     public RemarkListPresenter() {
+        mService = new RemarkService(TipsApplication.getInst());
     }
 
     public void getData() {
-        mCompositeSubscription.add(Observable.timer(3, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(l -> mvpView.getDataSuccess(null)));
+        List<RemarkEntity> list = mService.queryForAll();
+        mvpView.getDataSuccess(list);
     }
 }
