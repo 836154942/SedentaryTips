@@ -61,6 +61,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     TextView mTvStudiedTime;
     @BindView(R.id.mTvNextSleepTime)
     TextView mTvNextSleepTime;
+    @BindView(R.id.mTvStudyStatusName)
+    TextView mTvStudyStatusName;
+    @BindView(R.id.mTvSleepStatusName)
+    TextView mTvSleepStatusName;
 
 
     @Override
@@ -81,16 +85,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void upDateView() {
         if (AlarmUtil.isServiceRunning(this, AlarmServices.class.getName())) {
-            mTvStatus.setText("正在倒计时");
+            mTvStatus.setText("正在学习");
             long startTime = SpUtil.getPrefLong(Constant.SP_KEY_START_TIME, 0);
             long duringTime = SpUtil.getPrefLong(Constant.SP_KEY_TIME_DURING, 0);
             long endTime = startTime + duringTime;
 
-            mTvStudiedTime.setText(TimeUtils.countdownTime(System.currentTimeMillis(), startTime));
+            if (System.currentTimeMillis() - startTime < 0) {
+                //是再休息中
+                mTvStatus.setText("休息中");
+                mTvStudiedTime.setText(TimeUtils.countdownTime(startTime, System.currentTimeMillis()));
+                mTvStudyStatusName.setText("本次已经休息 ");
+            } else {
+                //是学习中
+                mTvStatus.setText("正在学习中");
+                mTvStudyStatusName.setText("本次已经学习 ");
+                mTvStudiedTime.setText(TimeUtils.countdownTime(System.currentTimeMillis(), startTime));
+            }
+
             if (endTime - System.currentTimeMillis() < 0) {
-                mTvNextSleepTime.setText("稍等噢，马上就能休息~ （超时" + TimeUtils.countdownTime(System.currentTimeMillis(), endTime) + "s）");
-            } else
+                mTvSleepStatusName.setText("稍等噢，马上就能休息~ ");
+                mTvNextSleepTime.setText("(超时" + TimeUtils.countdownTime(System.currentTimeMillis(), endTime) + "）");
+            } else {
+                mTvSleepStatusName.setText("距离下次休息 ");
                 mTvNextSleepTime.setText(TimeUtils.countdownTime(endTime, System.currentTimeMillis()));
+            }
+
         } else {
             mTvStatus.setText("还没有开始学习");
         }

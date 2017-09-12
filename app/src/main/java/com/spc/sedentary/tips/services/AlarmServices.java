@@ -54,8 +54,8 @@ public class AlarmServices extends Service {
             startActivity(ShowTipsActivity.buildIntent(this));//到时间提醒
             LogFileUtil.appen(new Date().toLocaleString() + "       " + "假装进行了一次提醒!!!!! \r\n");
             //重新设置开始时间
-            SpUtil.setSettingLong(Constant.SP_KEY_START_TIME, System.currentTimeMillis());
-//            SpUtil.setSettingLong(Constant.SP_KEY_START_TIME, System.currentTimeMillis() + Constant.getSleep_milli_time());
+//            SpUtil.setSettingLong(Constant.SP_KEY_START_TIME, System.currentTimeMillis());
+            SpUtil.setSettingLong(Constant.SP_KEY_START_TIME, System.currentTimeMillis() + Constant.getSleep_milli_time());
         } else {
             TLog.e("在记录时间");
             LogFileUtil.appen(new Date().toLocaleString() + "\r\n");
