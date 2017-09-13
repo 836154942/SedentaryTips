@@ -20,14 +20,26 @@ import butterknife.ButterKnife;
  * Created by spc on 2017/9/12.
  */
 
-public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder> {
+public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder> implements View.OnClickListener {
     List<RemarkEntity> mList;
     Context mContext;
+    OnItemClickListener mListener;
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.mRootView) {
+            mListener.onItemClick((Integer) view.getTag());
+        }
+    }
 
-    public RemarkAdapter(Context mContext, List<RemarkEntity> mList) {
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public RemarkAdapter(Context mContext, List<RemarkEntity> mList, OnItemClickListener listener) {
         this.mList = mList;
         this.mContext = mContext;
+        mListener = listener;
     }
 
     @Override
@@ -37,10 +49,12 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TLog.e("颜色是  "+mList.get(position).getColor());
+        TLog.e("颜色是  " + mList.get(position).getColor());
         holder.mTvDate.setText(mList.get(position).getDate());
         holder.mColorView.setBackgroundColor(mList.get(position).getColor());
         holder.mTvContent.setText(mList.get(position).getContent());
+        holder.mRootView.setOnClickListener(this);
+        holder.mRootView.setTag(position);
     }
 
     @Override
@@ -56,6 +70,8 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         TextView mTvContent;
         @BindView(R.id.mTvDate)
         TextView mTvDate;
+        @BindView(R.id.mRootView)
+        View mRootView;
 
         public ViewHolder(View itemView) {
             super(itemView);

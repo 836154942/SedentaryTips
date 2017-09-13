@@ -26,7 +26,7 @@ import butterknife.OnClick;
  */
 
 @ActivityInject
-public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> implements RemarkListView {
+public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> implements RemarkListView, RemarkAdapter.OnItemClickListener {
 
     @BindView(R.id.mRecycleView)
     RecyclerView mRecycleView;
@@ -49,7 +49,7 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
     }
 
     private void initView() {
-        mAdapter = new RemarkAdapter(this, mList);
+        mAdapter = new RemarkAdapter(this, mList, this);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mRecycleView.setAdapter(mAdapter);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
@@ -78,4 +78,8 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        startActivity(RemarkShowActivity.buildIntent(this, mList.get(position)));
+    }
 }
