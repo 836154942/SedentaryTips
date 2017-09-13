@@ -14,7 +14,10 @@ import com.spc.sedentary.tips.base.BaseMVPActivity;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 import com.spc.sedentary.tips.mvp.iview.RemarkListView;
 import com.spc.sedentary.tips.mvp.presenter.RemarkListPresenter;
+import com.spc.sedentary.tips.view.itemtouch.DefaultItemTouchHelpCallback;
+import com.spc.sedentary.tips.view.itemtouch.DefaultItemTouchHelper;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,7 +36,10 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
 
     private RemarkAdapter mAdapter;
     private List<RemarkEntity> mList;
-
+    /**
+     * 滑动拖拽的帮助类
+     */
+    private DefaultItemTouchHelper itemTouchHelper;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_remarklist;
@@ -44,15 +50,19 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
         super.onCreate(savedInstanceState);
     }
 
-    private void initData() {
-        mvpPresenter.getData();
-    }
 
     private void initView() {
         mAdapter = new RemarkAdapter(this, mList, this);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mRecycleView.setAdapter(mAdapter);
         mRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+        // 把ItemTouchHelper和itemTouchHelper绑定
+        itemTouchHelper = new DefaultItemTouchHelper(onItemTouchCallbackListener);
+        itemTouchHelper.attachToRecyclerView(mRecycleView);
+        mAdapter.setItemTouchHelper(itemTouchHelper);
+        itemTouchHelper.setDragEnable(true);
+        itemTouchHelper.setSwipeEnable(true);
     }
 
     public static Intent buildIntent(Context context) {
@@ -65,6 +75,30 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
         mList = list;
         initView();
     }
+
+    private DefaultItemTouchHelpCallback.OnItemTouchCallbackListener onItemTouchCallbackListener = new DefaultItemTouchHelpCallback.OnItemTouchCallbackListener() {
+        @Override
+        public void onSwiped(int adapterPosition) {
+            if (mList != null) {
+                mList.remove(adapterPosition);
+                mAdapter.notifyItemRemoved(adapterPosition);
+            }
+        }
+
+        @Override
+        public boolean onMove(int srcPosition, int targetPosition) {
+            if (mList != null) {
+                // 更换数据源中的数据Item的位置
+                Collections.swap(mList, srcPosition, targetPosition);
+
+                // 更新UI中的Item的位置，主要是给用户看到交互效果
+                mAdapter.notifyItemMoved(srcPosition, targetPosition);
+                return true;
+            }
+            return false;
+        }
+    };
+
 
     @OnClick(R.id.mIvAdd)
     public void addRemark() {

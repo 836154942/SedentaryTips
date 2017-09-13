@@ -2,7 +2,9 @@ package com.spc.sedentary.tips.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,6 +26,10 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
     List<RemarkEntity> mList;
     Context mContext;
     OnItemClickListener mListener;
+    /**
+     * Item拖拽滑动帮助
+     */
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     public void onClick(View view) {
@@ -34,6 +40,10 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
+        this.itemTouchHelper = itemTouchHelper;
     }
 
     public RemarkAdapter(Context mContext, List<RemarkEntity> mList, OnItemClickListener listener) {
@@ -62,7 +72,7 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         return mList == null ? 0 : mList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener {
 
         @BindView(R.id.mColorView)
         View mColorView;
@@ -72,10 +82,22 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         TextView mTvDate;
         @BindView(R.id.mRootView)
         View mRootView;
+        @BindView(R.id.iv_touch)
+        View mTouchView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mTouchView.setOnTouchListener(this);
+        }
+
+
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+            if (view == mTouchView)
+                itemTouchHelper.startDrag(this);
+            return false;
         }
     }
 }
+
