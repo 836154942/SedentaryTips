@@ -12,6 +12,7 @@
 
 
     <color name="app_text_black">#363636</color>
+    <color name="app_text_gray">#7d7d7d</color>
     <color name="app_text_orange">#ffb400</color>
     <color name="app_default_back_ground">#eeeeee</color>
     <color name="white">#ffffff</color>

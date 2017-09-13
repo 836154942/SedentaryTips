@@ -3,14 +3,11 @@ package com.spc.sedentary.tips.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.base.BaseActivity;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
-import com.spc.sedentary.tips.utils.Constant;
-import com.spc.sedentary.tips.utils.TextCheckUtil;
 
 import butterknife.BindView;
 
@@ -39,21 +36,12 @@ public class RemarkShowActivity extends BaseActivity {
     }
 
     private void initView() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setCustomActionBar("查看备忘录", "编辑", v -> startActivity(RemarkAddActivity.buildIntent(this, mRemark)));
         mRemark = (RemarkEntity) getIntent().getSerializableExtra(EXTRA_REMARK);
         mTvContent.setText(mRemark.getContent());
         mTvDate.setText(mRemark.getDate());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public static Intent buildIntent(Context c, RemarkEntity remark) {
         Intent intent = new Intent(c, RemarkShowActivity.class);

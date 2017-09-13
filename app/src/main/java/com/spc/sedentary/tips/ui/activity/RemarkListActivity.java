@@ -40,6 +40,7 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
      * 滑动拖拽的帮助类
      */
     private DefaultItemTouchHelper itemTouchHelper;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_remarklist;
@@ -68,6 +69,7 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
     public static Intent buildIntent(Context context) {
         return new Intent(context, RemarkListActivity.class);
     }
+
 
     @Override
     public void getDataSuccess(List<RemarkEntity> list) {

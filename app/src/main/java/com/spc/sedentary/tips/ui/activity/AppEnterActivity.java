@@ -20,7 +20,7 @@ public class AppEnterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        mCompositeSubscription.add(Observable.timer(5, TimeUnit.SECONDS)
+        mCompositeSubscription.add(Observable.timer(2, TimeUnit.SECONDS)
                 .subscribe(l -> {
                     startActivity(new Intent(this, MainActivity.class));
                     finish();

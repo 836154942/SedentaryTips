@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.spc.sedentary.tips.base.BaseActivity;
 import com.spc.sedentary.tips.database.service.RemarkService;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 import com.spc.sedentary.tips.utils.Constant;
-import com.spc.sedentary.tips.utils.TLog;
 import com.spc.sedentary.tips.utils.TextCheckUtil;
 import com.spc.sedentary.tips.utils.ToastUtil;
 
@@ -37,6 +35,7 @@ import butterknife.OnClick;
  */
 
 public class RemarkAddActivity extends BaseActivity {
+    public static final String EXTRA_REMARK = "extra_remark";
     @BindView(R.id.mEdText)
     EditText mEdText;
     @BindView(R.id.mTvDate)
@@ -56,6 +55,7 @@ public class RemarkAddActivity extends BaseActivity {
     ImageView mIvSelect5;
     RemarkEntity mRemark;
     private DatePickerDialog startDialog;
+    private boolean isEdit;
 
     @Override
     protected int getLayoutId() {
@@ -65,21 +65,25 @@ public class RemarkAddActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         initData();
+        initView();
     }
 
     private void initData() {
-        mRemark = new RemarkEntity();
-        mRemark.setColor(getResources().getColor(R.color.remark_color_1));
+        mRemark = (RemarkEntity) getIntent().getSerializableExtra(EXTRA_REMARK);
+        isEdit = (mRemark != null);
+        if (mRemark == null) {
+            mRemark = new RemarkEntity();
+            mRemark.setColor(getResources().getColor(R.color.remark_color_1));
+        }
     }
 
     private void initView() {
-        setTitle("添加备忘信息");
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);//显示返回按钮。
         }
+
         Calendar calendar = Calendar.getInstance();
         // 获取当前对应的年、月、日的信息
         int year = calendar.get(Calendar.YEAR);
@@ -94,13 +98,36 @@ public class RemarkAddActivity extends BaseActivity {
             }
         }, year, month, day);
 
+        if (isEdit) {
+            setTitle("修改忘信息");
+            mEdText.setText(mRemark.getContent());
+            mTvDate.setText(mRemark.getDate());
+            initSelectedColor();
+        } else
+            setTitle("添加备忘信息");
+    }
+
+    //设置已经选择的颜色
+    private void initSelectedColor() {
+        if (mRemark.getColor() == getResources().getColor(R.color.remark_color_1)) {
+            setColorSelect(R.id.mColor1);
+        } else if (mRemark.getColor() == getResources().getColor(R.color.remark_color_2)) {
+            setColorSelect(R.id.mColor2);
+        } else if (mRemark.getColor() == getResources().getColor(R.color.remark_color_3)) {
+            setColorSelect(R.id.mColor3);
+        } else if (mRemark.getColor() == getResources().getColor(R.color.remark_color_4)) {
+            setColorSelect(R.id.mColor4);
+        } else if (mRemark.getColor() == getResources().getColor(R.color.remark_color_5)) {
+            setColorSelect(R.id.mColor5);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if (TextCheckUtil.isUseable(mEdText.getText().toString())) {
+            if ((!isEdit && TextCheckUtil.isUseable(mEdText.getText().toString()))
+                    || (isEdit && !mEdText.getText().toString().equals(mRemark.getContent()))) {
                 showSaveDialog();
             } else {
                 finish();
@@ -128,6 +155,12 @@ public class RemarkAddActivity extends BaseActivity {
         return intent;
     }
 
+    public static Intent buildIntent(Context context, RemarkEntity mRemark) {
+        Intent intent = buildIntent(context);
+        intent.putExtra(EXTRA_REMARK, mRemark);
+        return intent;
+    }
+
     @OnClick({R.id.mColor1, R.id.mColor2, R.id.mColor3, R.id.mColor4, R.id.mColor5,
             R.id.mllDate, R.id.mBtnOK})
     public void onViewClicked(View view) {
@@ -151,8 +184,19 @@ public class RemarkAddActivity extends BaseActivity {
                 mRemark.setDate(mTvDate.getText().toString());
                 mRemark.setStatus(Constant.REMARK_STATUS_NORMAL);
                 RemarkService remarkService = new RemarkService(this);
-                remarkService.insert(mRemark);
-                finish();
+                if (isEdit) {
+                    if (remarkService.update(mRemark)) {
+                        finish();
+                    } else {
+                        Snackbar.make(view, "修改失败", Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (remarkService.insert(mRemark)) {
+                        finish();
+                    } else {
+                        Snackbar.make(view, "保存失败", Snackbar.LENGTH_SHORT).show();
+                    }
+                }
                 break;
             default:
                 break;
@@ -192,7 +236,8 @@ public class RemarkAddActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (TextCheckUtil.isUseable(mEdText.getText().toString())) {
+            if ((!isEdit && TextCheckUtil.isUseable(mEdText.getText().toString()))
+                    || (isEdit && !mEdText.getText().toString().equals(mRemark.getContent()))) {
                 showSaveDialog();
                 return true;
             }

@@ -2,7 +2,6 @@ package com.spc.sedentary.tips.database.dao;
 
 import android.content.Context;
 
-import com.google.googlejavaformat.Indent;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.spc.sedentary.tips.database.helper.DBHelper;
@@ -31,11 +30,13 @@ public class RemarkDao {
         }
     }
 
-    public void insert(RemarkEntity entity) {
+    public boolean insert(RemarkEntity entity) {
         try {
             frameDao.create(entity);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -52,11 +53,13 @@ public class RemarkDao {
 
     }
 
-    public void update(RemarkEntity entity) {
+    public boolean update(RemarkEntity entity) {
         try {
             frameDao.update(entity);
+            return true;
         } catch (SQLException e) {
-
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -86,7 +89,7 @@ public class RemarkDao {
     public List<RemarkEntity> queryNormalAll() {
         List<RemarkEntity> list = new ArrayList<>();
         try {
-             list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_NORMAL).query();
+            list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_NORMAL).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,7 +99,7 @@ public class RemarkDao {
     public List<RemarkEntity> queryCompletelAll() {
         List<RemarkEntity> list = new ArrayList<>();
         try {
-              list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_COMPLETE).query();
+            list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_COMPLETE).query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -18,8 +18,8 @@ public class RemarkService {
         mDao = new RemarkDao(context);
     }
 
-    public void insert(RemarkEntity remarkEntity) {
-        mDao.insert(remarkEntity);
+    public boolean insert(RemarkEntity remarkEntity) {
+        return mDao.insert(remarkEntity);
     }
 
     public List<RemarkEntity> queryForAll() {
@@ -35,4 +35,7 @@ public class RemarkService {
     }
 
 
+    public boolean update(RemarkEntity mRemark) {
+        return mDao.update(mRemark);
+    }
 }
