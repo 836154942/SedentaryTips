@@ -3,6 +3,7 @@ package com.spc.sedentary.tips.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -98,6 +99,8 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
                 mvpPresenter.updateComplete(mList.get(adapterPosition));
                 mList.remove(adapterPosition);
                 mAdapter.notifyItemRemoved(adapterPosition);
+                Snackbar.make(mRecycleView, "真棒！又完成一项~", Snackbar.LENGTH_SHORT)
+                        .setAction("", null).show();
                 notifyDataWithDelay();
             }
         }

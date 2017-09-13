@@ -3,6 +3,7 @@ package com.spc.sedentary.tips.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -98,6 +99,11 @@ public class CompleteRemarksActivity extends BaseMVPActivity<CompleteRemarksAcPr
         if (res) {
             mList.clear();
             mAdapter.notifyDataSetChanged();
+            Snackbar.make(mRecycleView, "已清空", Snackbar.LENGTH_LONG)
+                    .setAction("", null).show();
+        } else {
+            Snackbar.make(mRecycleView, "操作失败~", Snackbar.LENGTH_LONG)
+                    .setAction("", null).show();
         }
     }
 
@@ -113,6 +119,8 @@ public class CompleteRemarksActivity extends BaseMVPActivity<CompleteRemarksAcPr
             mvpPresenter.recover(mList.get(position));
             mList.remove(position);
             mAdapter.notifyItemRemoved(position);
+            Snackbar.make(mRecycleView, "已恢复为待处理~", Snackbar.LENGTH_SHORT)
+                    .setAction("", null).show();
             notifyDataWithDelay();
         }
 
@@ -121,6 +129,8 @@ public class CompleteRemarksActivity extends BaseMVPActivity<CompleteRemarksAcPr
             mvpPresenter.delete(mList.get(position));
             mList.remove(position);
             mAdapter.notifyItemRemoved(position);
+            Snackbar.make(mRecycleView, "已删除~", Snackbar.LENGTH_SHORT)
+                    .setAction("", null).show();
             notifyDataWithDelay();
         }
     };
