@@ -24,7 +24,7 @@ public class RemarkEntity implements Serializable {
     @DatabaseField(width = 1, defaultValue = "1")
     private String status;
     @DatabaseField(width = 5)
-    private String position;
+    private int  position;
 
     public RemarkEntity() {
     }
@@ -66,11 +66,11 @@ public class RemarkEntity implements Serializable {
         this.status = status;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(int  position) {
         this.position = position;
     }
 }

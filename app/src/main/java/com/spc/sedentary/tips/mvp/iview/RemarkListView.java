@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface RemarkListView extends BaseMvpViewInterface {
     void getDataSuccess(List<RemarkEntity> list);
+    void updatePositionSuccess();
 }

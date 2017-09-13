@@ -30,6 +30,15 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
      * Item拖拽滑动帮助
      */
     private ItemTouchHelper itemTouchHelper;
+    private boolean mIsShowOrder;
+
+    public boolean ismIsShowOrder() {
+        return mIsShowOrder;
+    }
+
+    public void setmIsShowOrder(boolean mIsShowOrder) {
+        this.mIsShowOrder = mIsShowOrder;
+    }
 
     @Override
     public void onClick(View view) {
@@ -65,7 +74,10 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         holder.mTvContent.setText(mList.get(position).getContent());
         holder.mRootView.setOnClickListener(this);
         holder.mRootView.setTag(position);
-        holder.mTouchView.setVisibility(View.VISIBLE);
+        if (mIsShowOrder)
+            holder.mTouchView.setVisibility(View.VISIBLE);
+        else
+            holder.mTouchView.setVisibility(View.GONE);
     }
 
     @Override

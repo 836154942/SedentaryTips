@@ -91,4 +91,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             mRightTV.setOnClickListener(mRightListener);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        onUnsubscribe();
+        super.onDestroy();
+    }
 }

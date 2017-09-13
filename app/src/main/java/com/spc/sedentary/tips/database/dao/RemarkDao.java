@@ -53,7 +53,7 @@ public class RemarkDao {
     public boolean deleteAllComplete() {
         try {
             DeleteBuilder<RemarkEntity, Integer> workFrameEntityIntegerDeleteBuilder = frameDao.deleteBuilder();
-            workFrameEntityIntegerDeleteBuilder.where().eq("status",Constant.REMARK_STATUS_COMPLETE);
+            workFrameEntityIntegerDeleteBuilder.where().eq("status", Constant.REMARK_STATUS_COMPLETE);
             workFrameEntityIntegerDeleteBuilder.delete();
             return true;
         } catch (SQLException e) {
@@ -99,7 +99,10 @@ public class RemarkDao {
     public List<RemarkEntity> queryNormalAll() {
         List<RemarkEntity> list = new ArrayList<>();
         try {
-            list = frameDao.queryBuilder().where().eq("status", Constant.REMARK_STATUS_NORMAL).query();
+            list = frameDao.queryBuilder()
+                    .orderBy("position", true)
+                    .where().eq("status", Constant.REMARK_STATUS_NORMAL)
+                    .query();
         } catch (SQLException e) {
             e.printStackTrace();
         }

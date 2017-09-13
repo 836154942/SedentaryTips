@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.anno.spc.ActivityInject;
 import com.spc.sedentary.tips.R;
@@ -47,6 +48,7 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
      * 滑动拖拽的帮助类
      */
     private DefaultItemTouchHelper itemTouchHelper;
+    private boolean mIsMoved = false;
 
     @Override
     protected int getLayoutId() {
@@ -56,12 +58,32 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
         mvpPresenter.getData();
         initRxBusReceive();
     }
 
-
     private void initView() {
+        setCustomActionBar("待办事项", "排序", view -> {
+            if (mAdapter == null) return;
+            if (mAdapter.ismIsShowOrder()) {
+                ((TextView) view).setText("排序");
+                mAdapter.setmIsShowOrder(false);
+                //保存更改
+                if (mIsMoved){
+                    mvpPresenter.upDatePosition(mList);
+                }
+            } else {
+                ((TextView) view).setText("完成");
+                mAdapter.setmIsShowOrder(true);
+            }
+            mAdapter.notifyDataSetChanged();
+        });
+
+    }
+
+
+    private void upDateView() {
         mAdapter = new RemarkAdapter(this, mList, this);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
         mRecycleView.setAdapter(mAdapter);
@@ -70,15 +92,12 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         mRecycleView.addItemDecoration(dividerItemDecoration);
 
-
         // 把ItemTouchHelper和itemTouchHelper绑定
         itemTouchHelper = new DefaultItemTouchHelper(onItemTouchCallbackListener);
         itemTouchHelper.attachToRecyclerView(mRecycleView);
         mAdapter.setItemTouchHelper(itemTouchHelper);
         itemTouchHelper.setDragEnable(true);
         itemTouchHelper.setSwipeEnable(true);
-
-
     }
 
     public static Intent buildIntent(Context context) {
@@ -89,7 +108,12 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
     @Override
     public void getDataSuccess(List<RemarkEntity> list) {
         mList = list;
-        initView();
+        upDateView();
+    }
+
+    @Override
+    public void updatePositionSuccess() {
+        dismissProgressDialog();
     }
 
     private DefaultItemTouchHelpCallback.OnItemTouchCallbackListener onItemTouchCallbackListener = new DefaultItemTouchHelpCallback.OnItemTouchCallbackListener() {
@@ -111,8 +135,7 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
                 // 更换数据源中的数据Item的位置
                 Collections.swap(mList, srcPosition, targetPosition);
                 mAdapter.notifyItemMoved(srcPosition, targetPosition);
-                mAdapter.notifyItemRangeChanged(srcPosition, targetPosition);
-                //重拍数据的编号
+                mIsMoved = true;
                 return true;
             }
             return false;
@@ -168,5 +191,4 @@ public class RemarkListActivity extends BaseMVPActivity<RemarkListPresenter> imp
                     }
                 }));
     }
-
 }
