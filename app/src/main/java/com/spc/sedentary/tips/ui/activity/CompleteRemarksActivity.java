@@ -23,8 +23,10 @@ import com.spc.sedentary.tips.utils.SpUtil;
 import com.spc.sedentary.tips.view.SwipeMenuRecyclerView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -91,6 +93,15 @@ public class CompleteRemarksActivity extends BaseMVPActivity<CompleteRemarksAcPr
 
     }
 
+    @Override
+    public void deleteAllComplete(Boolean res) {
+        if (res) {
+            mList.clear();
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+
     CompleteRemarkAdapter.ItemTouchListener mItemTouchListener = new CompleteRemarkAdapter.ItemTouchListener() {
         @Override
         public void onItemClick(int position) {
@@ -99,14 +110,26 @@ public class CompleteRemarksActivity extends BaseMVPActivity<CompleteRemarksAcPr
 
         @Override
         public void onRecover(int position) {
-
+            mvpPresenter.recover(mList.get(position));
+            mList.remove(position);
+            mAdapter.notifyItemRemoved(position);
+            notifyDataWithDelay();
         }
 
         @Override
         public void onDelete(int position) {
-
+            mvpPresenter.delete(mList.get(position));
+            mList.remove(position);
+            mAdapter.notifyItemRemoved(position);
+            notifyDataWithDelay();
         }
     };
+
+    private void notifyDataWithDelay() {
+        mCompositeSubscription.add(Observable.timer(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l -> mAdapter.notifyDataSetChanged()));
+    }
 
     private void initRxBusReceive() {
         mCompositeSubscription.add(RxBus.getDefault()

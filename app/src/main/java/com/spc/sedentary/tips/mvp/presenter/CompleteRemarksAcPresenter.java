@@ -5,6 +5,7 @@ import com.spc.sedentary.tips.base.TipsApplication;
 import com.spc.sedentary.tips.database.service.RemarkService;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 import com.spc.sedentary.tips.mvp.iview.CompleteRemarksAcView;
+import com.spc.sedentary.tips.utils.Constant;
 
 import java.util.List;
 
@@ -29,7 +30,27 @@ public class CompleteRemarksAcPresenter extends BasePresenter<CompleteRemarksAcV
 
 
     public void cleanCompleteRemarks() {
-//        mServices.
+
+        mCompositeSubscription.add(Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(mServices.deleteAllComplete());
+            }
+        })
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o ->mvpView.deleteAllComplete(o)));
+
+    }
+
+
+    public boolean delete(RemarkEntity remarkEntity) {
+        return mServices.delete(remarkEntity);
+    }
+
+    public boolean recover(RemarkEntity remarkEntity) {
+        remarkEntity.setStatus(Constant.REMARK_STATUS_NORMAL);
+        return mServices.update(remarkEntity);
     }
 
     public void loadAllCompleteRemarks() {

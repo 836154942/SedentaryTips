@@ -34,6 +34,14 @@ public class RemarkService {
         return mDao.queryCompletelAll();
     }
 
+    public boolean delete(RemarkEntity remarkEntity) {
+        return mDao.delete(remarkEntity);
+
+    }
+
+    public boolean deleteAllComplete() {
+        return mDao.deleteAllComplete();
+    }
 
     public boolean update(RemarkEntity mRemark) {
         return mDao.update(mRemark);

@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface  CompleteRemarksAcView extends BaseMvpViewInterface{
     void getAllCompleteData(List<RemarkEntity> remarkEntities);
+    void deleteAllComplete(Boolean res);
 }

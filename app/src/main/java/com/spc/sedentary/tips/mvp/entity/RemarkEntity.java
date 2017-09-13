@@ -26,6 +26,8 @@ public class RemarkEntity implements Serializable {
     @DatabaseField(width = 5)
     private String position;
 
+    public RemarkEntity() {
+    }
 
     public int getId() {
         return id;

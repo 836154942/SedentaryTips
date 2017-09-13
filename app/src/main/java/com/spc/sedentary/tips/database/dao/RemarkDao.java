@@ -42,8 +42,18 @@ public class RemarkDao {
 
     public boolean delete(RemarkEntity entity) {
         try {
+            frameDao.delete(entity);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteAllComplete() {
+        try {
             DeleteBuilder<RemarkEntity, Integer> workFrameEntityIntegerDeleteBuilder = frameDao.deleteBuilder();
-            workFrameEntityIntegerDeleteBuilder.where().eq("id", entity.getId());
+            workFrameEntityIntegerDeleteBuilder.where().eq("status",Constant.REMARK_STATUS_COMPLETE);
             workFrameEntityIntegerDeleteBuilder.delete();
             return true;
         } catch (SQLException e) {

@@ -62,12 +62,13 @@ public class CompleteRemarkAdapter extends RecyclerView.Adapter<CompleteRemarkAd
 
             if (holder.mRightMenu != null) {
                 holder.mllRecover.setOnClickListener(v -> {
-                    mItemTouchListener.onRecover(position);
                     holder.mSwipeItemLayout.close();
+                    mItemTouchListener.onRecover(position);
+
                 });
                 holder.mllDelete.setOnClickListener(v -> {
-                    mItemTouchListener.onDelete(position);
                     holder.mSwipeItemLayout.close();
+                    mItemTouchListener.onDelete(position);
                 });
 
             }
