@@ -1,6 +1,7 @@
 package com.spc.sedentary.tips.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -12,7 +13,10 @@ import android.widget.TextView;
 import com.spc.sedentary.tips.R;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
 import com.spc.sedentary.tips.utils.TLog;
+import com.spc.sedentary.tips.utils.TextCheckUtil;
+import com.spc.sedentary.tips.utils.TimeUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -68,8 +72,6 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TLog.e("onBindViewHolderonBind----> " + position);
-        holder.mTvDate.setText(mList.get(position).getDate());
         holder.mColorView.setBackgroundColor(mList.get(position).getColor());
         holder.mTvContent.setText(mList.get(position).getContent());
         holder.mRootView.setOnClickListener(this);
@@ -78,6 +80,31 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
             holder.mTouchView.setVisibility(View.VISIBLE);
         else
             holder.mTouchView.setVisibility(View.GONE);
+
+
+        if (TextCheckUtil.isUseable(mList.get(position).getDate())) {
+            StringBuilder builder = new StringBuilder("距离 ");
+            builder.append(mList.get(position).getDate());
+            Date nowDate = new Date();
+            Date targetDate = TimeUtils.rmarkStingTODate(mList.get(position).getDate());
+            if (targetDate != null) {
+                if (nowDate.before(targetDate)) {
+                    builder.append(" 还有 ");
+                    holder.mTvDate.setTextColor(mContext.getResources()
+                            .getColor(R.color.textColorPrimary));
+                    builder.append(TimeUtils.getDays(targetDate.getTime(), nowDate.getTime()));
+                    builder.append(" 天");
+                } else {
+                    builder.append(" ………… 已经超时");
+                    builder.append(TimeUtils.getDays(nowDate.getTime(), targetDate.getTime()));
+                    builder.append(" 天");
+                    holder.mTvDate.setTextColor(Color.RED);
+                }
+            }
+            holder.mTvDate.setText(builder.toString());
+        } else {
+            holder.mTvDate.setText("");
+        }
     }
 
     @Override
