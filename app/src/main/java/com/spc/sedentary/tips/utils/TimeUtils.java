@@ -22,16 +22,16 @@ public class TimeUtils {
         return hour + "小时" + min + "分" + s + "秒";
     }
 
-    public static String getDays(long startMilli, long endMilli) {
+    public static long getDays(long startMilli, long endMilli) {
         long l = (startMilli - endMilli) / 1000;
         long day = l / (24 * 60 * 60);
         long hour = (l / (60 * 60) - day * 24);
         long min = ((l / (60)) - day * 24 * 60 - hour * 60);
         long s = (l - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
         if (day > 1L) {
-            return day + "";
+            return day;
         }
-        return "1";
+        return 0;
     }
 
     public static Date rmarkStingTODate(String str) {
@@ -45,8 +45,8 @@ public class TimeUtils {
         return null;
     }
 
-    public static String getYYMMDD(String timeMilli) {//可根据需要自行截取数据显示
-        Date date = new Date(Long.parseLong(timeMilli));
+    public static String getYYMMDD(long timeMilli) {//可根据需要自行截取数据显示
+        Date date = new Date(timeMilli);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }

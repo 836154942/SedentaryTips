@@ -41,6 +41,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onResume() {
         super.onResume();
         upDateView();
+        mCompositeSubscription = new CompositeSubscription();
         mCompositeSubscription.add(Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(l -> upDateView()));
@@ -197,6 +199,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         public void onClick(DialogInterface dialog, int which) {
                             AlarmUtil.stopAlarmSericecs();
                             ToastUtil.showToast(R.string.end_tips);
+                            mTvStatus.setText("已经结束");
+                            mCompositeSubscription.unsubscribe();
+                            mCompositeSubscription.clear();
+                            mCompositeSubscription=null;
                         }
                     });
                     overBuilder.create().show();
