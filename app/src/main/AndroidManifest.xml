@@ -70,6 +70,11 @@
 
         <activity
             android:name=".ui.activity.RemarkListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CompleteRemarksActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>
 

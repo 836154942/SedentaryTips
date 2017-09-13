@@ -23,9 +23,9 @@ import butterknife.ButterKnife;
  */
 
 public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder> implements View.OnClickListener {
-    List<RemarkEntity> mList;
-    Context mContext;
-    OnItemClickListener mListener;
+    private List<RemarkEntity> mList;
+    private Context mContext;
+    private OnItemClickListener mListener;
     /**
      * Item拖拽滑动帮助
      */
@@ -59,12 +59,13 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TLog.e("颜色是  " + mList.get(position).getColor());
+        TLog.e("onBindViewHolderonBind----> " + position);
         holder.mTvDate.setText(mList.get(position).getDate());
         holder.mColorView.setBackgroundColor(mList.get(position).getColor());
         holder.mTvContent.setText(mList.get(position).getContent());
         holder.mRootView.setOnClickListener(this);
         holder.mRootView.setTag(position);
+        holder.mTouchView.setVisibility(View.VISIBLE);
     }
 
     @Override

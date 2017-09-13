@@ -55,7 +55,7 @@ public class RemarkAddActivity extends BaseActivity {
     ImageView mIvSelect5;
     RemarkEntity mRemark;
     private DatePickerDialog startDialog;
-    private boolean isEdit;
+    private boolean mIsEdit;
 
     @Override
     protected int getLayoutId() {
@@ -69,9 +69,10 @@ public class RemarkAddActivity extends BaseActivity {
         initView();
     }
 
+
     private void initData() {
         mRemark = (RemarkEntity) getIntent().getSerializableExtra(EXTRA_REMARK);
-        isEdit = (mRemark != null);
+        mIsEdit = (mRemark != null);
         if (mRemark == null) {
             mRemark = new RemarkEntity();
             mRemark.setColor(getResources().getColor(R.color.remark_color_1));
@@ -98,7 +99,7 @@ public class RemarkAddActivity extends BaseActivity {
             }
         }, year, month, day);
 
-        if (isEdit) {
+        if (mIsEdit) {
             setTitle("修改忘信息");
             mEdText.setText(mRemark.getContent());
             mTvDate.setText(mRemark.getDate());
@@ -126,8 +127,8 @@ public class RemarkAddActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if ((!isEdit && TextCheckUtil.isUseable(mEdText.getText().toString()))
-                    || (isEdit && !mEdText.getText().toString().equals(mRemark.getContent()))) {
+            if ((!mIsEdit && TextCheckUtil.isUseable(mEdText.getText().toString()))
+                    || (mIsEdit && !mEdText.getText().toString().equals(mRemark.getContent()))) {
                 showSaveDialog();
             } else {
                 finish();
@@ -184,14 +185,21 @@ public class RemarkAddActivity extends BaseActivity {
                 mRemark.setDate(mTvDate.getText().toString());
                 mRemark.setStatus(Constant.REMARK_STATUS_NORMAL);
                 RemarkService remarkService = new RemarkService(this);
-                if (isEdit) {
+                if (mIsEdit) {
                     if (remarkService.update(mRemark)) {
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_REMARK, mRemark);
+                        setResult(RESULT_OK, intent);
                         finish();
                     } else {
                         Snackbar.make(view, "修改失败", Snackbar.LENGTH_SHORT).show();
                     }
                 } else {
+
                     if (remarkService.insert(mRemark)) {
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_REMARK, mRemark);
+                        setResult(RESULT_OK, intent);
                         finish();
                     } else {
                         Snackbar.make(view, "保存失败", Snackbar.LENGTH_SHORT).show();
@@ -236,12 +244,13 @@ public class RemarkAddActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if ((!isEdit && TextCheckUtil.isUseable(mEdText.getText().toString()))
-                    || (isEdit && !mEdText.getText().toString().equals(mRemark.getContent()))) {
+            if ((!mIsEdit && TextCheckUtil.isUseable(mEdText.getText().toString()))
+                    || (mIsEdit && !mEdText.getText().toString().equals(mRemark.getContent()))) {
                 showSaveDialog();
                 return true;
             }
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

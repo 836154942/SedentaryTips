@@ -4,8 +4,7 @@ import com.spc.sedentary.tips.base.BasePresenter;
 import com.spc.sedentary.tips.base.TipsApplication;
 import com.spc.sedentary.tips.database.service.RemarkService;
 import com.spc.sedentary.tips.mvp.entity.RemarkEntity;
-import com.spc.sedentary.tips.mvp.iview.RemarkListView;
-import com.spc.sedentary.tips.utils.Constant;
+import com.spc.sedentary.tips.mvp.iview.CompleteRemarksAcView;
 
 import java.util.List;
 
@@ -17,26 +16,32 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by spc on 2017/9/11.
+ * Created by spc on 2017/9/13.
  */
 
-public class RemarkListPresenter extends BasePresenter<RemarkListView> {
-    RemarkService mService;
+public class CompleteRemarksAcPresenter extends BasePresenter<CompleteRemarksAcView> {
+    RemarkService mServices;
 
     @Inject
-    public RemarkListPresenter() {
-        mService = new RemarkService(TipsApplication.getInst());
+    public CompleteRemarksAcPresenter() {
+        mServices = new RemarkService(TipsApplication.getInst());
     }
 
-    public void getData() {
+
+    public void cleanCompleteRemarks() {
+//        mServices.
+    }
+
+    public void loadAllCompleteRemarks() {
         mvpView.showLoading();
         mCompositeSubscription.add(Observable.create(new Observable.OnSubscribe<List<RemarkEntity>>() {
             @Override
             public void call(Subscriber<? super List<RemarkEntity>> subscriber) {
-                List<RemarkEntity> list = mService.queryNormalAll();
+                List<RemarkEntity> list = mServices.queryCompleteAll();
                 subscriber.onNext(list);
             }
-        }).subscribeOn(Schedulers.io())
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<RemarkEntity>>() {
                     @Override
@@ -52,15 +57,8 @@ public class RemarkListPresenter extends BasePresenter<RemarkListView> {
                     @Override
                     public void onNext(List<RemarkEntity> remarkEntities) {
                         mvpView.hideLoading();
-                        mvpView.getDataSuccess(remarkEntities);
+                        mvpView.getAllCompleteData(remarkEntities);
                     }
                 }));
-
-    }
-
-
-    public void updateComplete(RemarkEntity entity) {
-        entity.setStatus(Constant.REMARK_STATUS_COMPLETE);
-        mService.update(entity);
     }
 }

@@ -209,8 +209,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(RemarkListActivity.buildIntent(this));
                 break;
             case R.id.remark_done:
-                //TODO 已完成备忘录
-                startActivity(ShowTipsActivity.buildIntent(this));
+                startActivity(CompleteRemarksActivity.buildIntent(this));
                 break;
             case R.id.nav_manage:
                 startActivity(new Intent(this, SettingsActivity.class));
