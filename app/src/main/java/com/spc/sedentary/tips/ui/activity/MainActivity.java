@@ -200,7 +200,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             AlarmUtil.stopAlarmSericecs();
                             ToastUtil.showToast(R.string.end_tips);
                             mTvStatus.setText("已经结束");
-                            stopService(new Intent(MainActivity.this,AlarmServices.class));
+                            stopService(new Intent(MainActivity.this, AlarmServices.class));
 
                         }
                     });
@@ -221,9 +221,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_send:
                 ToastUtil.showToast("这个超麻烦,多给我点时间~");
-                startActivity(ShowTipsActivity.buildIntent(this));
                 break;
-
+            case R.id.about:
+                startActivity(AboutActivity.buildIntent(this));
+                break;
             default:
                 break;
         }
