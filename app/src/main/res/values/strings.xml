@@ -5,6 +5,8 @@
     <string name="nav_tips2">design by spc</string>
     <string name="nav_tips">学习小助手,需要做什么?</string>
     <string name="enter_tips">To lx</string>
+    <string name="pref_title_display_name">您的昵称</string>
+    <string name="pref_default_display_name">lx</string>
 
     <string name="main_bottom_tips">久坐记得起来活动下噢~</string>
     <string name="study_start">开始提醒</string>
@@ -34,8 +36,7 @@
         based on your message history
     </string>
 
-    <string name="pref_title_display_name">您的昵称</string>
-    <string name="pref_default_display_name">lx</string>
+
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
@@ -127,4 +128,5 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="tips_activity_label">喝杯水休息下</string>
+    <string name="about">关于</string>
 </resources>

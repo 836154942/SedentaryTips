@@ -41,6 +41,10 @@
                 android:id="@+id/nav_manage"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="@string/setting" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/img_edituserinfo_4"
+                android:title="@string/about" />
         </menu>
     </item>
 

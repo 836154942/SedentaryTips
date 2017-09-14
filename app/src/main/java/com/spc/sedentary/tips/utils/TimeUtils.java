@@ -1,5 +1,6 @@
 package com.spc.sedentary.tips.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,10 +22,31 @@ public class TimeUtils {
         return hour + "小时" + min + "分" + s + "秒";
     }
 
+    public static long getDays(long startMilli, long endMilli) {
+        long l = (startMilli - endMilli) / 1000;
+        long day = l / (24 * 60 * 60);
+        long hour = (l / (60 * 60) - day * 24);
+        long min = ((l / (60)) - day * 24 * 60 - hour * 60);
+        long s = (l - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        if (day > 1L) {
+            return day;
+        }
+        return 0;
+    }
 
+    public static Date rmarkStingTODate(String str) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = sdf.parse(str);
+            return date;
+        } catch (ParseException e) {
+            TLog.e(e.getMessage());
+        }
+        return null;
+    }
 
-    public static String getYYMMDD(String timeMilli) {//可根据需要自行截取数据显示
-        Date date = new Date(Long.parseLong(timeMilli));
+    public static String getYYMMDD(long timeMilli) {//可根据需要自行截取数据显示
+        Date date = new Date(timeMilli);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
