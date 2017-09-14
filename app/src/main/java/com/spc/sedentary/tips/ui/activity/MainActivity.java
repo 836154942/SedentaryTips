@@ -200,9 +200,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             AlarmUtil.stopAlarmSericecs();
                             ToastUtil.showToast(R.string.end_tips);
                             mTvStatus.setText("已经结束");
-                            mCompositeSubscription.unsubscribe();
-                            mCompositeSubscription.clear();
-                            mCompositeSubscription=null;
+                            stopService(new Intent(MainActivity.this,AlarmServices.class));
+
                         }
                     });
                     overBuilder.create().show();
